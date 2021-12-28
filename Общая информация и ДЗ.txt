@@ -1,0 +1,39 @@
+Даты прохождения: 15/10/21 - 29/10/21
+Информация о курсе: https://netology.ru/programs/vvedenie-v-sql?mindbox-click-id=31a7552a-60de-4176-9270-03bab4a55c76&utm_source=triggers&utm_medium=email&utm_campaign=bds_sql_bou_1d_before#/
+
+
+Домашнее задание:
+
+Написать запросы, по следующим задачам:
+1) Какое количество платежей было совершено?
+Решение:
+select count(*) from orders
+
+2) Какое количество товаров находится в категории “Игрушки”?
+Решение:
+select p.category_id, c.category, count(p.product_id)
+from product p join category c on c.category_id = p.category_id
+group by p.category_id, c.category
+having c.category ilike 'игрушки'
+
+3) В какой категории находится больше всего товаров?
+Решение:
+select p.category_id, c.category, count(p.product_id)
+from product p join category c on c.category_id = p.category_id
+group by p.category_id, c.category
+order by count desc
+
+4) Сколько “Черепах” купила Williams Linda?
+Решение:
+select c.customer_id, last_name, first_name, p.product, opl.amount
+from customer c 
+join orders o on o.customer_id = c.customer_id
+join order_product_list opl on o.order_id = opl.order_id
+join product p on p.product_id = opl.product_id
+where last_name ilike 'Williams' and product ilike '%черепа%'
+
+5) С кем живет Williams Linda?
+Решение:
+select *
+from staff s 
+where s.address_id = (select address_id from customer where last_name ilike 'Williams')
